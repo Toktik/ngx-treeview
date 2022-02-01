@@ -21,11 +21,18 @@
   <li>Using OrderDownlineTreeviewEventParser to get selection by order</li>
   <li>Another example about using custom template</li>
 </ul>
+
+Custom filter
+<select [(ngModel)]="filter" (ngModelChange)="filterChanged()">
+  <option value="A">A</option>
+  <option value="B">B</option>
+</select>
+
 <div class="row">
   <div class="col-6">
     <div class="form-group">
       <div class="d-inline-block">
-        <ngx-treeview [items]="items" [itemTemplate]="itemTemplate" (selectedChange)="onSelectedChange($event)">
+        <ngx-treeview [config]="config" [items]="items" [itemTemplate]="itemTemplate" (selectedChange)="onSelectedChange($event)">
         </ngx-treeview>
       </div>
     </div>

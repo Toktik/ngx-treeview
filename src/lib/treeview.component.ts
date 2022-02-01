@@ -153,25 +153,37 @@ export class TreeviewComponent implements OnChanges {
         };
     }
 
-    private updateFilterItems() {
-        if (this.filterText !== '') {
-            const filterItems: TreeviewItem[] = [];
-            const filterText = this.filterText.toLowerCase();
-            this.items.forEach(item => {
-                const newItem = this.filterItem(item, filterText);
-                if (!isNil(newItem)) {
-                    filterItems.push(newItem);
-                }
-            });
-            this.filterItems = filterItems;
-        } else {
-            this.filterItems = this.items;
+    updateFilterItems() {
+        if (this.filterText === '') {
+          this.filterItems = this.items;
         }
+
+        const filterItems: TreeviewItem[] = [];
+        const filterText = this.filterText.toLowerCase();
+        this.items.forEach(item => {
+            const newItem = this.filterItem(item, filterText);
+            if (!isNil(newItem)) {
+                filterItems.push(newItem);
+            }
+        });
+        this.filterItems = filterItems;
 
         this.updateCheckedOfAll();
     }
 
     private filterItem(item: TreeviewItem, filterText: string): TreeviewItem {
+        // custom filtering
+        if (this.config.filterFn) {
+          if (!this.config.filterFn(item)) {
+            return undefined;
+          }
+        }
+
+        if (filterText === '') {
+          return item;
+        }
+
+        // text filtering
         const isMatch = includes(item.text.toLowerCase(), filterText);
         if (isMatch) {
             return item;

@@ -6,28 +6,29 @@ import {
 } from '../../lib';
 import { ProductService } from './product.service';
 
-@Injectable()
-export class ProductTreeviewConfig extends TreeviewConfig {
-    hasAllCheckBox = true;
-    hasFilter = true;
-    hasCollapseExpand = false;
-    maxHeight = 400;
-}
-
 @Component({
     selector: 'ngx-product',
     styleUrls: ['./product.component.scss'],
     templateUrl: './product.component.html',
     providers: [
         ProductService,
-        { provide: TreeviewEventParser, useClass: OrderDownlineTreeviewEventParser },
-        { provide: TreeviewConfig, useClass: ProductTreeviewConfig }
+        { provide: TreeviewEventParser, useClass: OrderDownlineTreeviewEventParser }
     ]
 })
 export class ProductComponent implements OnInit {
     @ViewChild(TreeviewComponent) treeviewComponent: TreeviewComponent;
     items: TreeviewItem[];
     rows: string[];
+    config: TreeviewConfig = TreeviewConfig.create({
+      hasAllCheckBox: true,
+      hasFilter: true,
+      hasCollapseExpand: false,
+      filterFn: (item) => {
+        return this.filter === 'B';
+      },
+      maxHeight: 400
+    });
+    filter: string;
 
     constructor(
         private service: ProductService
@@ -35,6 +36,10 @@ export class ProductComponent implements OnInit {
 
     ngOnInit() {
         this.items = this.service.getProducts();
+    }
+
+    filterChanged() {
+      this.treeviewComponent.updateFilterItems();
     }
 
     onSelectedChange(downlineItems: DownlineTreeviewItem[]) {
