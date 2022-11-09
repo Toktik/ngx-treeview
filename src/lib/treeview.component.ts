@@ -179,13 +179,13 @@ export class TreeviewComponent implements OnChanges {
           }
         }
 
-        if (filterText === '') {
+        if (filterText === '' && !item.children) {
           return item;
         }
 
         // text filtering
         const isMatch = includes(item.text.toLowerCase(), filterText);
-        if (isMatch) {
+        if (filterText !== '' && isMatch) {
             return item;
         } else {
             if (!isNil(item.children)) {
