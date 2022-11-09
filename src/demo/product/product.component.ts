@@ -16,7 +16,7 @@ import { ProductService } from './product.service';
     ]
 })
 export class ProductComponent implements OnInit {
-    @ViewChild(TreeviewComponent) treeviewComponent: TreeviewComponent;
+    @ViewChild(TreeviewComponent, { static: true }) treeviewComponent: TreeviewComponent;
     items: TreeviewItem[];
     rows: string[];
     config: TreeviewConfig = TreeviewConfig.create({
